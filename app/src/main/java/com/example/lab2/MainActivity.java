@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
-import java.util.Locale;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity
         implements InputFragment.OnInputSubmitListener, ResultFragment.OnResultCancelListener {
@@ -43,20 +43,12 @@ public class MainActivity extends AppCompatActivity
                                boolean areaChecked, boolean perimeterChecked) {
         ArrayList<String> lines = new ArrayList<>();
         lines.add("Selected: " + shape.title);
-        lines.add(shape.valueLabel + " = " + format(value));
+        lines.add(shape.valueLabel + " = " + value);
 
-        if (areaChecked) {
-            lines.add("Area: " + format(shape.area(value)));
-        }
-        if (perimeterChecked) {
-            lines.add("Perimeter: " + format(shape.perimeter(value)));
-        }
+        if (areaChecked) lines.add("Area: " + shape.area(value));
+        if (perimeterChecked) lines.add("Perimeter: " + shape.perimeter(value));
 
         return TextUtils.join("\n", lines);
-    }
-
-    private String format(double x) {
-        return String.format(Locale.US, "%.4f", x);
     }
 
     private void showResultFragment(String resultText) {
@@ -68,19 +60,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onCancelResult() {
-        // 1) Прибрати/сховати ResultFragment
         Fragment resultFragment = getSupportFragmentManager().findFragmentByTag(TAG_RESULT);
-        if (resultFragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .remove(resultFragment)
-                    .commit();
-        }
+        assert resultFragment != null;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .remove(resultFragment)
+                .commit();
 
-        // 2) Очистити форму в InputFragment
-        Fragment inputFragment = getSupportFragmentManager().findFragmentByTag(TAG_INPUT);
-        if (inputFragment instanceof InputFragment) {
-            ((InputFragment) inputFragment).clearForm();
-        }
+        ((InputFragment) Objects.requireNonNull(getSupportFragmentManager().
+                findFragmentByTag(TAG_INPUT))).clearForm();
     }
 }

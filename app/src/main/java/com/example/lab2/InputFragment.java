@@ -37,17 +37,13 @@ public class InputFragment extends Fragment {
     }
 
     public InputFragment() {
-        // Required empty public constructor
     }
 
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if (context instanceof OnInputSubmitListener) {
-            listener = (OnInputSubmitListener) context;
-        } else {
-            throw new RuntimeException(context + " must implement OnInputSubmitListener");
-        }
+        if (context instanceof OnInputSubmitListener) listener = (OnInputSubmitListener) context;
+        else throw new RuntimeException(context + " must implement OnInputSubmitListener");
     }
 
     @Override
@@ -110,9 +106,6 @@ public class InputFragment extends Fragment {
             return;
         }
 
-        // Підтримка коми як десяткового роздільника
-        s = s.replace(',', '.');
-
         double value;
         try {
             value = Double.parseDouble(s);
@@ -126,9 +119,8 @@ public class InputFragment extends Fragment {
             return;
         }
 
-        if (listener != null) {
+        if (listener != null)
             listener.onInputSubmitted(selectedId, value, areaChecked, perimeterChecked);
-        }
     }
 
     public void clearForm() {
@@ -139,25 +131,19 @@ public class InputFragment extends Fragment {
     }
 
     private void showToast(String msg) {
-        if (getContext() != null) {
-            Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
-        }
+        if (getContext() != null) Toast.makeText(getContext(), msg, Toast.LENGTH_LONG).show();
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        if (shapeGroup != null) {
+        if (shapeGroup != null)
             outState.putInt(KEY_SELECTED_SHAPE, shapeGroup.getCheckedRadioButtonId());
-        }
-        if (checkArea != null) {
+        if (checkArea != null)
             outState.putBoolean(KEY_AREA_CHECKED, checkArea.isChecked());
-        }
-        if (checkPerimeter != null) {
+        if (checkPerimeter != null)
             outState.putBoolean(KEY_PERIMETER_CHECKED, checkPerimeter.isChecked());
-        }
-        if (inputValue != null) {
+        if (inputValue != null)
             outState.putString(KEY_INPUT_VALUE, inputValue.getText().toString());
-        }
     }
 }

@@ -23,7 +23,6 @@ public class ResultFragment extends Fragment {
     }
 
     public ResultFragment() {
-        // Required empty public constructor
     }
 
     public static ResultFragment newInstance(String resultText) {
@@ -66,9 +65,9 @@ public class ResultFragment extends Fragment {
         Button btnCancel = view.findViewById(R.id.btnCancel);
 
         String resultText = "";
-        if (getArguments() != null) {
+        if (getArguments() != null)
             resultText = getArguments().getString(ARG_RESULT_TEXT, "");
-        }
+
 
         resultView.setText(resultText);
 
