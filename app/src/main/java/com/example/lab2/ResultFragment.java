@@ -72,9 +72,7 @@ public class ResultFragment extends Fragment {
         resultView.setText(resultText);
 
         btnCancel.setOnClickListener(v -> {
-            if (listener != null) {
-                listener.onCancelResult();
-            }
+            if (listener != null) listener.onCancelResult();
         });
     }
 }
